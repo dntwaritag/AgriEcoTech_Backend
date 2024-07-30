@@ -13,7 +13,6 @@ router.post("/", async (request, response) => {
       frequency: request.body.frequency,
       waterpH: request.body.waterpH,
       cost: request.body.cost,
-      slope: request.body.slope,
       date: request.body.date,
     };
     const water = await Water.create(newWater);

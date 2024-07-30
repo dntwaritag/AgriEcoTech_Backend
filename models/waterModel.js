@@ -7,7 +7,6 @@ const waterSchema = new mongoose.Schema({
     frequency: { type: String, required:false },
     waterpH: { type: String, required: false},
     cost: { type: String, required:false },
-    slope: { type: String, required:false },
     date: { type: Date, default: Date.now }
 });
 

@@ -1,18 +1,24 @@
 import express from 'express';
 import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import path from 'path';
+import cloudinary from 'cloudinary';
 import { Remedie } from '../models/RemedieModel.js';
+// Cloudinary configuration
+cloudinary.v2.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const router = express.Router();
-
-// Set up multer for image uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Make sure this directory exists
+// Set up multer with Cloudinary storage
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary.v2,
+  params: {
+    folder: 'uploads',
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp'],
   },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
-  }
 });
 
 const upload = multer({ storage: storage });
@@ -23,7 +29,7 @@ router.post("/", upload.single('image'), async (req, res) => {
     const newRemedie = {
       title: req.body.title,
       description: req.body.description,
-      image: req.file ? '/uploads/' + req.file.filename : '',
+      image: req.file ? req.file.path : '',
       date: req.body.date
     };
     const remedie = await Remedie.create(newRemedie);
@@ -72,7 +78,7 @@ router.put("/:id", upload.single('image'), async (req, res) => {
     const { id } = req.params;
     const updatedData = {
       ...req.body,
-      image: req.file ? '/uploads/' + req.file.filename : req.body.image
+      image: req.file ? req.file.path : req.body.image
     };
     const result = await Soil.findByIdAndUpdate(id, updatedData, { new: true, runValidators: true });
     if (!result) {

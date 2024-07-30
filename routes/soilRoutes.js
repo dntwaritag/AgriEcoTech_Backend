@@ -11,6 +11,7 @@ cloudinary.v2.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+
 const router = express.Router();
 
 // Set up multer with Cloudinary storage
@@ -36,6 +37,7 @@ router.post("/", upload.single('image'), async (req, res) => {
       slope: req.body.slope,
       date: req.body.date,
     };
+    
     const soil = await Soil.create(newSoil);
     return res.status(201).send(soil);
   } catch (error) {
