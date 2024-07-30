@@ -12,7 +12,7 @@ import soilRoute from './routes/soilRoutes.js';
 import deseaseRoute from './routes/deseaseRoute.js';
 import waterRoute from './routes/waterRoute.js';
 import remedieRoute from './routes/RemedieRoute.js';
-
+import authRoute from './routes/auth.js';
 // Load environment variables from .env file
 dotenv.config();
 
@@ -56,6 +56,8 @@ app.use('/soil', soilRoute);
 app.use('/desease', deseaseRoute);
 app.use('/water', waterRoute);
 app.use('/remedie', remedieRoute);
+app.use('/auth', authRoute);
+
 
 mongoose.connect(process.env.MONGO_DB_URL).then(() => {
   console.log("Database connected");
