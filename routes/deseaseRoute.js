@@ -1,11 +1,11 @@
 
 import express from 'express'
-import { Deasease  } from '../models/deseaseModel.js';
+import { Deasease } from '../models/deseaseModel.js';
 const router = express.Router();
 
 router.post("/", async (request, response) => {
   try {
- 
+
     const newDesease = {
       type: request.body.type,
       name: request.body.name,
@@ -42,7 +42,7 @@ router.get("/", async (request, response) => {
 router.get("/:id", async (request, response) => {
   try {
     const { id } = request.params;
-    const desease = await Deasease .findById(id);
+    const desease = await Deasease.findById(id);
     return response.status(200).json(desease);
   } catch (error) {
     console.log(error.message);
@@ -56,7 +56,7 @@ router.get("/:id", async (request, response) => {
 router.put("/:id", async (request, response) => {
   try {
     const { id } = request.params;
-    const result = await Deasease .findByIdAndUpdate(id, request.body);
+    const result = await Deasease.findByIdAndUpdate(id, request.body);
     if (!result) {
       return response.status(404).json({
         message: "Book not found",
